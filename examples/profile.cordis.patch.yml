@@ -1,0 +1,5 @@
+# Example: merge dsh-weknora into an existing DSH profile's cordis.patch.yml.
+# All runtime configuration is environment variables, nothing lives here.
+- insert:
+    - id: dsh-weknora
+      name: dsh-weknora

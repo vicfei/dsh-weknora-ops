@@ -1,0 +1,7 @@
+# dsh-weknora bundle layer: inserts the plugin into a DSH profile.
+# Follows the bundle format observed in deepseek-ai/dsh-superagent-prototype
+# (DSH engine ^0.2.x). The profile supplies nothing else — all configuration
+# is environment (WEKNORA_URL / WEKNORA_API_KEY / WEKNORA_TENANT_ID).
+- insert:
+    - id: dsh-weknora
+      name: dsh-weknora
