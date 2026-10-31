@@ -33,9 +33,22 @@ export async function status(): Promise<string> {
 export async function kbList(args: Args): Promise<string> {
   const cfg = loadConfig();
   const page = num(args, "page", 1);
-  const size = Math.min(num(args, "size", 50), 200);
-  const res = await request(cfg, "GET", `/api/v1/knowledge-bases?page=${page}&page_size=${size}`);
-  return render(res);
+  const size = Math.min(num(args, "size", 30), 100);
+  // Some WeKnora versions ignore page/page_size here and return the whole
+  // tenant (observed: 1.2 MB for 542 KBs). Compact client-side before the
+  // clip ever gets involved: the agent needs id/name/counts, not config blobs.
+  const res = (await request(cfg, "GET", `/api/v1/knowledge-bases?page=${page}&page_size=${size}`)) as {
+    data?: Array<Record<string, unknown>>;
+  };
+  const all = (res.data ?? []).map((k) => ({
+    id: k.id,
+    name: k.name,
+    type: k.knowledge_type ?? k.type,
+    documents: k.knowledge_count,
+    chunks: k.chunk_count,
+  }));
+  const slice = all.slice((page - 1) * size, page * size);
+  return render({ total: all.length, page, size, knowledge_bases: slice });
 }
 
 export async function kbShow(args: Args): Promise<string> {
@@ -51,8 +64,11 @@ export async function search(args: Args): Promise<string> {
   const cfg = loadConfig();
   const kb = requireValue(args, "_0", "kb-id");
   const query = requireValue(args, "_1", "query");
+  const topK = num(args, "top-k", 5);
   const res = await request(cfg, "POST", `/api/v1/knowledge-bases/${kb}/hybrid-search`, {
-    body: { query, top_k: num(args, "top-k", 5), rewrite_query: false },
+    // Dual field names: v5 docs use `query`/`top_k`, v0.8.0-line servers
+    // (observed on v3.1.3) bind `query_text`/`match_count` and 400 otherwise.
+    body: { query, query_text: query, top_k: topK, match_count: topK, rewrite_query: false },
   });
   return render(res);
 }

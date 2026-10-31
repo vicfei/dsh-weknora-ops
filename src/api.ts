@@ -1,4 +1,7 @@
 // WeKnora HTTP client. Zero runtime dependencies: Node 20+ global fetch.
+import { readFileSync } from "node:fs";
+import { homedir } from "node:os";
+import { join } from "node:path";
 //
 // Auth model (WeKnora docs/04-api/01-api-overview.md):
 //   X-API-Key: <key>            — workspace-scoped machine principal (recommended for agents)
@@ -26,14 +29,29 @@ export class WeKnoraError extends Error {
 }
 
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): WeKnoraConfig {
-  const baseUrl = (env.WEKNORA_URL || "http://127.0.0.1:8080").replace(/\/+$/, "");
-  const apiKey = env.WEKNORA_API_KEY || "";
-  const tenantId = env.WEKNORA_TENANT_ID || undefined;
+  // DSH's agent shell scrubs *KEY* env vars (secret hygiene), so a config file
+  // is the primary channel inside agent harnesses; env still wins for CI/ops.
+  const file = env.WEKNORA_CLI_CONFIG || join(homedir(), ".config", "weknora-cli", "config");
+  const fileEnv: Record<string, string> = {};
+  try {
+    const text = readFileSync(file, "utf8");
+    for (const line of text.split("\n")) {
+      const m = /^export\s+([A-Z_]+)=(.*)$/.exec(line.trim()) ?? /^([A-Z_]+)=(.*)$/.exec(line.trim());
+      if (m) fileEnv[m[1]!] = m[2]!.trim().replace(/^["']|["']$/g, "");
+    }
+  } catch {
+    // absent config file is normal
+  }
+  const pick = (name: string): string | undefined => env[name] || fileEnv[name] || undefined;
+  const baseUrl = (pick("WEKNORA_URL") || "http://127.0.0.1:8080").replace(/\/+$/, "");
+  const apiKey = pick("WEKNORA_API_KEY") || "";
+  const tenantId = pick("WEKNORA_TENANT_ID") || undefined;
   if (!apiKey) {
     throw new Error(
-      "WEKNORA_API_KEY is not set. Create a workspace API key in WeKnora (设置 → API Keys) " +
-        "with capabilities retrieve/chat/ingest, then export WEKNORA_API_KEY=<key> " +
-        "[WEKNORA_URL=<base>] [WEKNORA_TENANT_ID=<id>].",
+      "WEKNORA_API_KEY not found in env or " + file + ". Create a workspace API key in WeKnora " +
+        "(设置 → API Keys, capabilities retrieve/chat/ingest), then either export " +
+        "WEKNORA_API_KEY=<key> or write it to " + file + " (chmod 600) — the config file is the " +
+        "reliable channel inside DSH, whose agent shell scrubs *KEY* env vars.",
     );
   }
   return { baseUrl, apiKey, tenantId };

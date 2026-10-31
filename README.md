@@ -41,9 +41,14 @@ npm install && npm run build
 # expose weknora-cli (global install or link)
 npm link   # or: npm i -g .
 
-# environment (a workspace API key from WeKnora 设置 → API Keys, capabilities: retrieve/chat/ingest)
+# credentials — config file is the primary channel inside DSH (its agent shell
+# scrubs *KEY* env vars); env vars still work for CI/ops
+mkdir -p ~/.config/weknora-cli && chmod 700 ~/.config/weknora-cli
+cat > ~/.config/weknora-cli/config <<'EOF'   # workspace API key: WeKnora 设置 → API Keys, capabilities retrieve/chat/ingest
 export WEKNORA_URL=http://127.0.0.1:8080
 export WEKNORA_API_KEY=wk-…
+EOF
+chmod 600 ~/.config/weknora-cli/config
 
 # smoke — health + auth probe
 weknora-cli status
@@ -53,7 +58,7 @@ Into a DSH profile: apply this repo's `cordis.patch.yml` (see `examples/profile.
 
 ## Status
 
-v0.1.0 — vertical slice: 7 read verbs, 3 ingest verbs, delete gate, unit tests. Streaming `ask` (SSE), agent-chat operations and an MCP-endpoint mode are on the [roadmap](docs/DESIGN.md).
+v0.1.1 — vertical slice: 7 read verbs, 3 ingest verbs, delete gate, unit tests. **Live-tested end to end**: DSH 0.2.1-rc.5 (headless, DeepSeek provider) driving `weknora-cli` against a real WeKnora v3.1.3 server — skill discovery, `status`, `kb list` (542 KBs), `search` with cited hits; the run also caught and fixed two real integration bugs (env scrubbing → config file; `query_text`/`match_count` on v0.8.0-line servers). `ask` follows the v5-line session flow — on older servers the skill falls back to `search` + synthesis. Streaming answers, agent-chat operations and an MCP-endpoint mode are on the [roadmap](docs/DESIGN.md).
 
 ## Acknowledgments
 

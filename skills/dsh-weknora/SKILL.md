@@ -7,7 +7,7 @@ Use this skill whenever the task touches knowledge the team keeps in WeKnora: in
 
 ## Setup (once)
 
-`WEKNORA_URL` (default `http://127.0.0.1:8080`), `WEKNORA_API_KEY`, optional `WEKNORA_TENANT_ID` must be in the environment. If missing, tell the person the one-line fix instead of guessing a key. The key should be workspace-scoped with capabilities `retrieve`, `chat`, `ingest` — that scope is the enforcement layer for everything below.
+Credentials live in `~/.config/weknora-cli/config` (chmod 600, `export WEKNORA_URL=…` / `WEKNORA_API_KEY=…` / optional `WEKNORA_TENANT_ID=…` lines) — the config file is the reliable channel inside DSH, whose agent shell scrubs `*KEY*` environment variables; env vars still win where they exist (CI). If the key is missing, tell the person the one-line fix instead of guessing one. The key should be workspace-scoped with capabilities `retrieve`, `chat`, `ingest` — that scope is the enforcement layer for everything below.
 
 ## Reading (agent-free — use freely)
 
@@ -21,6 +21,7 @@ weknora-cli tagtree <kb>                 # hierarchical tag tree
 ```
 
 - Prefer `search` when you need evidence to reason with; prefer `ask` when the person wants an answer and you will cite it verbatim.
+- `ask` requires the server's knowledge-chat session flow (v5-line API). If it 4xx/404s on an older server, fall back to `search` and synthesize the answer yourself from the cited chunks — say which route you took.
 - Tag-tree node ids are not tag ids. To filter by a subtree, take the node's tag ids (nodes with non-empty `tag_id`, plus descendants) from `tagtree` output.
 - Output is clipped to protect your context. If a listing page is cut, page with `--page N` rather than widening.
 

@@ -40,9 +40,13 @@ npm install && npm run build
 
 npm link   # 或 npm i -g .，暴露 weknora-cli
 
-# 环境（WeKnora 设置 → API Keys 创建空间级 key，能力勾 retrieve/chat/ingest）
+# 凭据 —— DSH 的 agent shell 会擦洗 *KEY* 环境变量，配置文件是 DSH 内的主渠道；env 在 CI/运维场景仍然有效
+mkdir -p ~/.config/weknora-cli && chmod 700 ~/.config/weknora-cli
+cat > ~/.config/weknora-cli/config <<'EOF'   # 空间级 key：WeKnora 设置 → API Keys，能力勾 retrieve/chat/ingest
 export WEKNORA_URL=http://127.0.0.1:8080
 export WEKNORA_API_KEY=wk-…
+EOF
+chmod 600 ~/.config/weknora-cli/config
 
 weknora-cli status   # 健康检查 + 认证探测
 ```
@@ -51,7 +55,7 @@ weknora-cli status   # 健康检查 + 认证探测
 
 ## 当前状态
 
-v0.1.0 垂直切片：7 个读命令、3 个入库命令、删除门禁、单元测试。流式 `ask`（SSE）、agent-chat 操作、MCP 端点模式见[路线图](docs/DESIGN.md)。
+v0.1.1 垂直切片：7 个读命令、3 个入库命令、删除门禁、单元测试。**已完成活体端到端实测**：DSH 0.2.1-rc.5（headless + DeepSeek 供应商）驱动 `weknora-cli` 对真实 WeKnora v3.1.3 服务器——技能发现、`status`、`kb list`（542 个知识库）、`search` 带引用命中全链路跑通；该轮测试还抓出并修复了两个真实集成 bug（DSH 擦洗 *KEY* 环境变量 → 改配置文件通道；v0.8.0 系服务器要求 `query_text`/`match_count`）。`ask` 走 v5 线会话流——旧服务器上技能自动回退为 `search` + 自行综合。流式回答、agent-chat 操作、MCP 端点模式见[路线图](docs/DESIGN.md)。
 
 ## 致谢
 

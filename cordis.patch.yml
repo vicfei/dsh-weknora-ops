@@ -1,7 +1,11 @@
-# dsh-weknora bundle layer: inserts the plugin into a DSH profile.
-# Follows the bundle format observed in deepseek-ai/dsh-superagent-prototype
-# (DSH engine ^0.2.x). The profile supplies nothing else — all configuration
-# is environment (WEKNORA_URL / WEKNORA_API_KEY / WEKNORA_TENANT_ID).
-- insert:
-    - id: dsh-weknora
-      name: dsh-weknora
+# dsh-weknora bundle layer.
+#
+# Deliberately inserts no plugin entry: this bundle is a distribution vehicle —
+# a skill (skills/dsh-weknora/SKILL.md, discovered by @deepseek-ai/dsh-skill-filesystem
+# from ~/.dsh/skills/ or <project>/.dsh/skills/) and a CLI (`weknora-cli`, npm bin).
+# A cordis plugin import would fail: the package ships no plugin module.
+#
+# Install:
+#   npm i -g vicfei/dsh-weknora                       # puts weknora-cli on PATH
+#   ln -s <repo>/skills/dsh-weknora ~/.dsh/skills/dsh-weknora   # registers the skill
+[]
