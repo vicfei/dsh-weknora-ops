@@ -1,5 +1,7 @@
 # dsh-weknora-ops
 
+[![CI](https://github.com/vicfei/dsh-weknora-ops/actions/workflows/ci.yml/badge.svg)](https://github.com/vicfei/dsh-weknora-ops/actions/workflows/ci.yml)
+
 **The write path and governance for WeKnora in your DeepSeek Harness agent — document ingest, gated deletes, tag trees — under a three-layer safety model.**
 
 A [DeepSeek Harness](https://www.deepseek.com/en/harness/) plugin (skill + `weknora-ops` CLI) for [WeKnora](https://github.com/Tencent/WeKnora), the open-source knowledge-base platform.
@@ -37,11 +39,8 @@ This mirrors the admission-control philosophy of [dsh-super-agent](https://githu
 ## Install
 
 ```bash
-git clone https://github.com/vicfei/dsh-weknora-ops && cd dsh-weknora-ops
-npm install && npm run build
-
-# expose weknora-ops (global install or link)
-npm link   # or: npm i -g .
+npm i -g dsh-weknora-ops        # exposes the weknora-ops CLI
+# or from source: git clone https://github.com/vicfei/dsh-weknora-ops && cd dsh-weknora-ops && npm install && npm link
 
 # credentials — config file is the primary channel inside DSH (its agent shell
 # scrubs *KEY* env vars); env vars still work for CI/ops

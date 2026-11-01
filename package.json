@@ -1,7 +1,7 @@
 {
   "name": "dsh-weknora-ops",
   "version": "0.2.1",
-  "description": "DeepSeek Harness plugin: query and operate WeKnora knowledge bases from any DSH agent — scoped API key, read-first safety, citation-grounded answers",
+  "description": "DeepSeek Harness plugin: the WRITE path for WeKnora \u2014 document ingest, gated deletes, tag trees \u2014 under a three-layer safety model. Complements the official read-only plugin.",
   "type": "module",
   "private": false,
   "bin": {
@@ -29,5 +29,35 @@
     "typescript": "^5.6.0",
     "vitest": "^2.1.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "author": "vicfei",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vicfei/dsh-weknora-ops.git"
+  },
+  "homepage": "https://github.com/vicfei/dsh-weknora-ops#readme",
+  "bugs": {
+    "url": "https://github.com/vicfei/dsh-weknora-ops/issues"
+  },
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "weknora",
+    "agent",
+    "plugin",
+    "knowledge-base",
+    "cli",
+    "rag"
+  ],
+  "files": [
+    "bin",
+    "src",
+    "skills",
+    "cordis.patch.yml",
+    "examples",
+    "docs",
+    "README.md",
+    "README.zh-CN.md",
+    "LICENSE"
+  ]
 }

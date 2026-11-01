@@ -37,10 +37,8 @@
 ## 安装
 
 ```bash
-git clone https://github.com/vicfei/dsh-weknora-ops && cd dsh-weknora-ops
-npm install && npm run build
-
-npm link   # 或 npm i -g .，暴露 weknora-ops
+npm i -g dsh-weknora-ops        # 暴露 weknora-ops CLI
+# 或源码安装: git clone https://github.com/vicfei/dsh-weknora-ops && cd dsh-weknora-ops && npm install && npm link
 
 # 凭据 —— DSH 的 agent shell 会擦洗 *KEY* 环境变量，配置文件是 DSH 内的主渠道；env 在 CI/运维场景仍然有效
 mkdir -p ~/.config/weknora-ops && chmod 700 ~/.config/weknora-ops
