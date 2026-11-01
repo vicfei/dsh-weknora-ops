@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Thin launcher: runs the TypeScript CLI through tsx so a global install
-// (`npm i -g vicfei/dsh-weknora`) exposes a stable `weknora-cli`.
+// (`npm i -g vicfei/dsh-weknora-ops`) exposes a stable `weknora-ops`.
 //
 // Node resolves a bare `--import tsx` from the CWD, so invoking the bin from
 // anywhere outside the package tree fails with ERR_MODULE_NOT_FOUND. Run the

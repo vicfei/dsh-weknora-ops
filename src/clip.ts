@@ -9,7 +9,7 @@ export const TAIL = 5_000;
 
 export function clip(text: string, max = MAX_TOTAL, head = HEAD, tail = TAIL): string {
   if (text.length <= max) return text;
-  const kept = text.slice(0, head) + "\n…[weknora-cli: output clipped, " + (text.length - max) + " chars dropped]…\n" + text.slice(-tail);
+  const kept = text.slice(0, head) + "\n…[weknora-ops: output clipped, " + (text.length - max) + " chars dropped]…\n" + text.slice(-tail);
   return kept;
 }
 

@@ -3,8 +3,8 @@
 ## Shapes
 
 - **Bundle** (`cordis.patch.yml`): inserts one plugin entry, no config — follows the format observed in `deepseek-ai/dsh-superagent-prototype` (DSH engine ^0.2.x). All configuration is environment.
-- **Skill** (`skills/dsh-weknora/SKILL.md`): teaches cite-don't-recall, when to `search` vs `ask`, tag-tree id semantics, and the ingest/delete etiquette.
-- **CLI** (`weknora-cli`): zero-runtime-dependency TypeScript (Node 20+ fetch). Output is clipped (head+tail, marked) to protect the agent's context budget.
+- **Skill** (`skills/dsh-weknora-ops/SKILL.md`): teaches cite-don't-recall, when to `search` vs `ask`, tag-tree id semantics, and the ingest/delete etiquette.
+- **CLI** (`weknora-ops`): zero-runtime-dependency TypeScript (Node 20+ fetch). Output is clipped (head+tail, marked) to protect the agent's context budget.
 
 ## Safety
 

@@ -1,10 +1,10 @@
-// weknora-cli — command surface for the dsh-weknora skill.
+// weknora-ops — command surface for the dsh-weknora-ops skill.
 // Reads are agent-free; ingests are gated by the skill; deletes are gated twice.
 
 import { fail } from "./clip.js";
 import * as cmds from "./commands.js";
 
-const HELP = `weknora-cli — query and operate WeKnora from a DeepSeek Harness agent
+const HELP = `weknora-ops — query and operate WeKnora from a DeepSeek Harness agent
 
 env: WEKNORA_URL (default http://127.0.0.1:8080) · WEKNORA_API_KEY (required)
      WEKNORA_TENANT_ID (optional, platform keys)
@@ -106,7 +106,7 @@ async function main() {
     }
     process.stdout.write(out.endsWith("\n") ? out : out + "\n");
   } catch (e) {
-    process.stderr.write(`weknora-cli: ${(e as Error).message}\n`);
+    process.stderr.write(`weknora-ops: ${(e as Error).message}\n`);
     process.exit(1);
   }
 }

@@ -1,11 +1,11 @@
 {
-  "name": "dsh-weknora",
-  "version": "0.1.1",
+  "name": "dsh-weknora-ops",
+  "version": "0.2.0",
   "description": "DeepSeek Harness plugin: query and operate WeKnora knowledge bases from any DSH agent — scoped API key, read-first safety, citation-grounded answers",
   "type": "module",
   "private": false,
   "bin": {
-    "weknora-cli": "bin/weknora-cli.js"
+    "weknora-ops": "bin/weknora-ops.js"
   },
   "scripts": {
     "cli": "tsx src/cli.ts",

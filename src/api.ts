@@ -31,7 +31,7 @@ export class WeKnoraError extends Error {
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): WeKnoraConfig {
   // DSH's agent shell scrubs *KEY* env vars (secret hygiene), so a config file
   // is the primary channel inside agent harnesses; env still wins for CI/ops.
-  const file = env.WEKNORA_CLI_CONFIG || join(homedir(), ".config", "weknora-cli", "config");
+  const file = env.WEKNORA_CLI_CONFIG || join(homedir(), ".config", "weknora-ops", "config");
   const fileEnv: Record<string, string> = {};
   try {
     const text = readFileSync(file, "utf8");

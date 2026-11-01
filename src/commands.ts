@@ -82,7 +82,7 @@ export async function ask(args: Args): Promise<string> {
   const cfg = loadConfig();
   const kb = requireValue(args, "_0", "kb-id");
   const question = requireValue(args, "_1", "question");
-  const sessionId = `dsh-weknora-${Date.now()}`;
+  const sessionId = `dsh-weknora-ops-${Date.now()}`;
   const res = await request(cfg, "POST", `/api/v1/knowledge-chat/${sessionId}`, {
     body: {
       query: question,

@@ -1,11 +1,11 @@
-# dsh-weknora bundle layer.
+# dsh-weknora-ops bundle layer.
 #
 # Deliberately inserts no plugin entry: this bundle is a distribution vehicle —
-# a skill (skills/dsh-weknora/SKILL.md, discovered by @deepseek-ai/dsh-skill-filesystem
-# from ~/.dsh/skills/ or <project>/.dsh/skills/) and a CLI (`weknora-cli`, npm bin).
+# a skill (skills/dsh-weknora-ops/SKILL.md, discovered by @deepseek-ai/dsh-skill-filesystem
+# from ~/.dsh/skills/ or <project>/.dsh/skills/) and a CLI (`weknora-ops`, npm bin).
 # A cordis plugin import would fail: the package ships no plugin module.
 #
 # Install:
-#   npm i -g vicfei/dsh-weknora                       # puts weknora-cli on PATH
-#   ln -s <repo>/skills/dsh-weknora ~/.dsh/skills/dsh-weknora   # registers the skill
+#   npm i -g vicfei/dsh-weknora-ops                       # puts weknora-ops on PATH
+#   ln -s <repo>/skills/dsh-weknora-ops ~/.dsh/skills/dsh-weknora-ops   # registers the skill
 []
