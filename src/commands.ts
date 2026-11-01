@@ -2,7 +2,7 @@
 // clip/render so the DSH agent's context stays bounded.
 
 import { readFile, stat } from "node:fs/promises";
-import { request, health, loadConfig } from "./api.js";
+import { request, health, loadConfig, WeKnoraError } from "./api.js";
 import { render, fail } from "./clip.js";
 
 type Args = Record<string, string | boolean | undefined>;
@@ -137,7 +137,8 @@ export async function docManual(args: Args): Promise<string> {
   const kb = requireValue(args, "_0", "kb-id");
   const title = requireValue(args, "title", "title");
   const text = requireValue(args, "_1", "text");
-  return render(await request(cfg, "POST", `/api/v1/knowledge-bases/${kb}/knowledge/manual`, { body: { title, text } }));
+  // Dual field names: v5 docs bind `text`, v0.8.0-line servers bind `content`.
+  return render(await request(cfg, "POST", `/api/v1/knowledge-bases/${kb}/knowledge/manual`, { body: { title, text, content: text } }));
 }
 
 // ---------- destructive (double-gated: skill etiquette + key capability) ----------
@@ -149,5 +150,15 @@ export async function docDelete(args: Args): Promise<string> {
   const cfg = loadConfig();
   const kb = requireValue(args, "_0", "kb-id");
   const doc = requireValue(args, "_1", "doc-id");
-  return render(await request(cfg, "DELETE", `/api/v1/knowledge-bases/${kb}/knowledge/${doc}`));
+  // v5 docs: DELETE /knowledge-bases/:kb/knowledge/:doc; v0.8.0-line servers
+  // mount the per-document delete at /knowledge/:doc (KB-scoped group only has
+  // the clear-all route). Try the documented shape, fall back on 404.
+  try {
+    return render(await request(cfg, "DELETE", `/api/v1/knowledge-bases/${kb}/knowledge/${doc}`));
+  } catch (e) {
+    if (e instanceof WeKnoraError && e.status === 404) {
+      return render(await request(cfg, "DELETE", `/api/v1/knowledge/${doc}`));
+    }
+    throw e;
+  }
 }
